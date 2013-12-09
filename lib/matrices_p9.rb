@@ -34,7 +34,6 @@ class MatrizDensa < Matriz
 attr_accessor :mat 
 	#crea una matriz con n filas, m columnas y almacena los valores que se le pasan por parámetros
 	def initialize(f,c,e) 
-	
 		super(f,c)
 		@mat = Array.new(@fil.to_i){Array.new(@col.to_i)} #k2
 	    	if (e != nil)
@@ -201,6 +200,12 @@ attr_accessor :mat
 		(c1)<=>(c2)
 	end
 
+	def igual(other)
+		if(other.instance_of?MatrizDensa)
+			self.mat = other.mat
+		end		
+	end
+
 end
 		
 
@@ -333,7 +338,15 @@ attr_accessor :valor
 		
 			return temp
 	end
+	
 
+	def igual(other)
+		if(other.instance_of?MatrizDispersa)
+			self.posx = other.posx
+			self.posy = other.posy
+			self.valor = other.valor
+		end		
+	end
 
 	#Mdevuelve la matriz en forma de string
 	def to_s
