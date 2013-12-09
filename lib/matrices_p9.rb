@@ -19,7 +19,35 @@ attr_accessor :col
 	end
 
 
-	#Sobrecarga del operador de suma, recibe como parametros dos matrices y devuelve una matriz con el resultado de la suma de 		forma A+B= (Aij+Bij)
+end
+
+
+
+
+
+
+
+
+#Clase que hereda de la clase matriz. Almacena matrices densas.
+class MatrizDensa < Matriz
+#Array bidimensional que representa la matriz
+attr_accessor :mat 
+	#crea una matriz con n filas, m columnas y almacena los valores que se le pasan por parámetros
+	def initialize(f,c,e) 
+	
+		super(f,c)
+		@mat = Array.new(@fil.to_i){Array.new(@col.to_i)} #k2
+	    	if (e != nil)
+			#Rellenamos la matriz con lo valores recibidos 
+	    		for i in (0...@fil.to_i)
+				for j in (0...@col.to_i)
+					@mat[i][j]=e[i*@col.to_i+j];
+				end
+	    		end
+	    	end
+	end
+	
+
 	def +(other)	             
 		if(self.fil == other.fil and self.col == other.col)
 			# SELF Matrices densas
@@ -60,68 +88,13 @@ attr_accessor :col
 					end
 				end
 			end
-
-			# SELF Matriz Dispersa
-			if self.instance_of?MatrizDispersa
-				if other.instance_of?MatrizDensa
-					temp = MatrizDensa.new(self.fil, self.col, nil)
-					#for i in (0...@fil.to_i)
-						@fil.to_i.times do |i| 
-					
-						for j in (0...@col.to_i)
-							encontrado = 0
-							#for k in (0...self.posx.size.to_i)
-							self.posx.size.times do |k| 
-							
-								if (i==self.posx[k] and j==self.posy[k] and encontrado==0)
-									temp.mat[i][j] = (other.mat[i][j]) + (self.valor[k])
-									encontrado = 1	
-								end
-							end
-							if (encontrado == 0)
-								temp.mat[i][j] = other.mat[i][j]
-							end
-						end
-					end
-				end
-		
-
-				if other.instance_of?MatrizDispersa
-					temp = MatrizDispersa.new(self.fil,self.col,[],[],[])
-					temp.valor = self.valor
-					temp.posx = self.posx
-					temp.posy = self.posy
-
-					#for j in (0...other.posx.size.to_i)
-					other.posx.size.to_i.times do |j| 
-					
-						encontrado = false
-						#for k in (0...self.posx.size.to_i)
-						self.posx.size.times do |k| 
-							
-							if(other.posx[j] == temp.posx[k] and other.posy[j] == temp.posy[k])
-								temp.valor[k] = temp.valor[k] + other.valor[j]
-								encontrado = true
-							end
-							
-						end
-						if (encontrado == false)
-							temp.posx << other.posx[j]
-							temp.posy << other.posy[j]
-							temp.valor << other.valor[j]
-						end
-					end
-				end
-			end
-		
-			return temp
-		else 
-			return nil
+			
 		end
+		return temp
 	end
-	#Sobrecarga del operador de resta, recibe como parametros dos matrices y devuelve una matriz con el resultado de la suma de forma A-B= (Aij+Bij)
-	
-	def -(other)	             
+
+
+	def -(other)	              
 		if(self.fil == other.fil and self.col == other.col)
 			# SELF Matrices densas
 			if self.instance_of?MatrizDensa
@@ -139,14 +112,10 @@ attr_accessor :col
 				end
 
 				if other.instance_of?MatrizDispersa
-					#for i in (0...@fil.to_i)
-					@fil.to_i.times do |i| 
 					
-						#for j in (0...@col.to_i)
-						@col.to_i.times do |j| 
-					
+					@fil.to_i.times do |i| 					
+						@col.to_i.times do |j| 					
 							encontrado = 0
-							#for k in (0...other.posx.size)
 							other.posx.size.times do |k| 
 							
 								if (i==other.posx[k] and j==other.posy[k] and encontrado==0)
@@ -161,87 +130,9 @@ attr_accessor :col
 					end
 				end
 			end
-
-			# SELF Matriz Dispersa
-			if self.instance_of?MatrizDispersa
-				if other.instance_of?MatrizDensa
-					temp = MatrizDensa.new(self.fil, self.col, nil)
-					#for i in (0...@fil.to_i)
-					@fil.to_i.times do |i| 
-					
-						#for j in (0...@col.to_i)
-						@col.to_i.times do |j| 
-							
-							encontrado = 0
-							#for k in (0...self.posx.size.to_i)
-							self.posx.size.times do |k| 
-							
-								if (i==self.posx[k] and j==self.posy[k] and encontrado==0)
-									temp.mat[i][j] = (other.mat[i][j]) - (self.valor[k])
-									encontrado = 1	
-								end
-							end
-							if (encontrado == 0)
-								temp.mat[i][j] = other.mat[i][j]
-							end
-						end
-					end
-				end
-		
-
-				if other.instance_of?MatrizDispersa
-					temp = MatrizDispersa.new(self.fil,self.col,[],[],[])
-					temp.valor = self.valor
-					temp.posx = self.posx
-					temp.posy = self.posy
-
-					#for j in (0...other.posx.size.to_i)
-					other.posx.size.times do |j| 
-							
-						encontrado = false
-						#for k in (0...self.posx.size.to_i)
-						self.posx.size.times do |k| 
-							
-							if(other.posx[j] == temp.posx[k] and other.posy[j] == temp.posy[k])
-								temp.valor[k] = temp.valor[k] - other.valor[j]
-								encontrado = true
-							end
-							
-						end
-						if (encontrado == false)
-							temp.posx << other.posx[j]
-							temp.posy << other.posy[j]
-							temp.valor << other.valor[j]
-						end
-					end
-				end
-			end
-		
-			return temp
-		else 
-			return nil
+			
 		end
-	end
-	    
-end
-
-#Clase que hereda de la clase matriz. Almacena matrices densas.
-class MatrizDensa < Matriz
-#Array bidimensional que representa la matriz
-attr_accessor :mat 
-	#crea una matriz con n filas, m columnas y almacena los valores que se le pasan por parámetros
-	def initialize(f,c,e) 
-	
-		super(f,c)
-		@mat = Array.new(@fil.to_i){Array.new(@col.to_i)} #k2
-	    	if (e != nil)
-			#Rellenamos la matriz con lo valores recibidos 
-	    		for i in (0...@fil.to_i)
-				for j in (0...@col.to_i)
-					@mat[i][j]=e[i*@col.to_i+j];
-				end
-	    		end
-	    	end
+		return temp
 	end
 	
 	# Metodo getter que devuelve el valor de una posicion determinada
@@ -332,7 +223,118 @@ attr_accessor :valor
 		@valor = valor
 
 	end
-	
+
+	def +(other)	
+		if self.instance_of?MatrizDispersa
+				if other.instance_of?MatrizDensa
+					temp = MatrizDensa.new(self.fil, self.col, nil)
+					#for i in (0...@fil.to_i)
+						@fil.to_i.times do |i| 
+					
+						for j in (0...@col.to_i)
+							encontrado = 0
+							#for k in (0...self.posx.size.to_i)
+							self.posx.size.times do |k| 
+							
+								if (i==self.posx[k] and j==self.posy[k] and encontrado==0)
+									temp.mat[i][j] = (other.mat[i][j]) + (self.valor[k])
+									encontrado = 1	
+								end
+							end
+							if (encontrado == 0)
+								temp.mat[i][j] = other.mat[i][j]
+							end
+						end
+					end
+				end
+		
+
+				if other.instance_of?MatrizDispersa
+					temp = MatrizDispersa.new(self.fil,self.col,[],[],[])
+					temp.valor = self.valor
+					temp.posx = self.posx
+					temp.posy = self.posy
+
+					#for j in (0...other.posx.size.to_i)
+					other.posx.size.to_i.times do |j| 
+					
+						encontrado = false
+						#for k in (0...self.posx.size.to_i)
+						self.posx.size.times do |k| 
+							
+							if(other.posx[j] == temp.posx[k] and other.posy[j] == temp.posy[k])
+								temp.valor[k] = temp.valor[k] + other.valor[j]
+								encontrado = true
+							end
+							
+						end
+						if (encontrado == false)
+							temp.posx << other.posx[j]
+							temp.posy << other.posy[j]
+							temp.valor << other.valor[j]
+						end
+					end
+				end
+			end
+		end
+		return temp
+	end
+
+	def -(other)
+		if self.instance_of?MatrizDispersa
+				if other.instance_of?MatrizDensa
+					temp = MatrizDensa.new(self.fil, self.col, nil)
+					@fil.to_i.times do |i| 
+						@col.to_i.times do |j| 
+							encontrado = 0
+							self.posx.size.times do |k| 
+							
+								if (i==self.posx[k] and j==self.posy[k] and encontrado==0)
+									temp.mat[i][j] = (other.mat[i][j]) - (self.valor[k])
+									encontrado = 1	
+								end
+							end
+							if (encontrado == 0)
+								temp.mat[i][j] = other.mat[i][j]
+							end
+						end
+					end
+				end
+		
+
+				if other.instance_of?MatrizDispersa
+					temp = MatrizDispersa.new(self.fil,self.col,[],[],[])
+					temp.valor = self.valor
+					temp.posx = self.posx
+					temp.posy = self.posy
+
+					#for j in (0...other.posx.size.to_i)
+					other.posx.size.times do |j| 
+							
+						encontrado = false
+						#for k in (0...self.posx.size.to_i)
+						self.posx.size.times do |k| 
+							
+							if(other.posx[j] == temp.posx[k] and other.posy[j] == temp.posy[k])
+								temp.valor[k] = temp.valor[k] - other.valor[j]
+								encontrado = true
+							end
+							
+						end
+						if (encontrado == false)
+							temp.posx << other.posx[j]
+							temp.posy << other.posy[j]
+							temp.valor << other.valor[j]
+						end
+					end
+				end
+			end
+		
+		end
+		return temp
+	end
+
+
 	#Mdevuelve la matriz en forma de string
 	def to_s
 		s=String.new
@@ -377,59 +379,5 @@ attr_accessor :valor
 end
 
 
-#|i,j, mat1,mat2| mat2[i][j] = (mat1[i][j]) + (mat2[i][j]) return mat2
-	
-	
-#	f = Proc.new{|i,j, mat1, mat2| mat2[i][j] = (mat1[i][j]) + (mat2[i][j]) puts "#{mat2[i][j]}"}
-#	f.call(1,1,[[1,2],[1,2]],[[1,2],[1,2]])
-
-
-
-
-
-
-
-
-=begin
-a=MatrizDensa.new(3,3,[1,2,3,4,5,6,7,8,9])
-b=MatrizDensa.new(3,3,[1,2,3,4,5,6,7,8,9])
-puts "#{(a+b).to_s}"
-puts "#{(a-b).to_s}"
-
-
-a=MatrizDensa.new(3,3,[1,2,3,4,5,6,7,8,9])
-b=MatrizDispersa.new(3,3,[0,1,2],[0,1,2],[1,2,3])
-b=(b+b)
-puts "#{(b.valor).to_s}"
-
-
-a=MatrizDensa.new(3,3,[1,2,3,34,5,6,7,8,9])
-b=MatrizDispersa.new(3,3,[0,1,2],[0,1,2],[1,0,3])
-puts "#{a.max}"
-puts "#{b.max}"
-puts "#{a.min}"
-puts "#{b.min}"
-
-b=MatrizDispersa.new(3,3,[0,1,2],[0,1,2],[1,2,3])
-c=MatrizDispersa.new(3,3,[0,1,2],[0,2,2],[1,2,3])
-b=(b+c)
-puts "#{b.valor.to_s}"
-
-a=MatrizDensa.new(3,3,[1,2,3,4,5,6,7,8,9])
-b=MatrizDensa.new(3,3,[1,2,3,4,5,6,7,8,9])
-if(a==b)
-	puts "igual"
-end
-if (a>=b)
-	puts "mayor"
-end
-
-b=MatrizDispersa.new(3,3,[0,1,2],[0,1,2],[1,2,3])
-c=MatrizDispersa.new(3,3,[0,1,2],[0,2,2],[1,2,3])
-b=(b+c)
-puts "#{b.to_s}"
-
-
-=end
 
 
