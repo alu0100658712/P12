@@ -276,8 +276,8 @@ attr_accessor :valor
 					end
 				end
 			end
-		end
-		return temp
+		
+			return temp
 	end
 
 	def -(other)
@@ -330,8 +330,8 @@ attr_accessor :valor
 				end
 			end
 		
-		end
-		return temp
+		
+			return temp
 	end
 
 
